@@ -61,6 +61,20 @@ namespace TimingChallengesNotNuzlocke
         // As well as for setting timers
         private Random randomCounter = new Random();
 
+        // Now I need to create a method that will generate a random action and consequence from the arrays above and display them in the UI.
+        private void GenerateRandomActionAndConsequence()
+        {
+            // A random number is produced under the constraint that it must be the length of the array - 1
+            // This is then used to display the appropriate action and consequence in the UI
+            int randomAction = randomCounter.Next(possibleActions.Length);
+            int randomConsequence = randomCounter.Next(possibleConsequences.Length);
+
+            // Display the generated action and consequence in the UI
+            // gotta remember to set the content of the labels to the generated action and consequence in the XAML UI
+            ActionLabel.Content = possibleActions[randomAction];
+            ConsequenceLabel.Content = possibleConsequences[randomConsequence];
+        }
+
     }
 
 }
