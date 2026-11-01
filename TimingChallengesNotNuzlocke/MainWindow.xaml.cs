@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+
 // Need to add this reference else it cant find my Rules.cs class
 using TimingChallengesNotNuzlocke.TimingChallengeClasses;
 
@@ -24,6 +26,10 @@ namespace TimingChallengesNotNuzlocke
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        // I need a timer to keep track of the time for all rules.
+        private DispatcherTimer ruleCountdownTimer = new DispatcherTimer();
+
         public MainWindow()
         {
 
@@ -88,8 +94,37 @@ namespace TimingChallengesNotNuzlocke
             Rules ruleOne = CreateRandomRule(300);
             Rules rulTwo = CreateRandomRule(600);
             Rules ruleThree = CreateRandomRule(900);
+        }
 
+        // Now I need to create a function that will be called when a rule's timer runs out,
+        // this function will remove the rule from the UI and generate a new random rule with the same time limit.
+        private void ReplaceRule(Rules expiredRule)
+        {
+       
+        }
+
+        // I need a timer to keep track of the time for all rules.
+        // When the timer for a rule runs out, it will call the ReplaceRule function
+        // to remove the expired rule and generate a new random rule with the same time limit.
+        private void RuleCountdownTimer()
+        {
+            // Set the timer interval to 1 second
+            ruleCountdownTimer.Interval = TimeSpan.FromSeconds(1);
+            // Subscribe to the Tick event of the timer
+            ruleCountdownTimer.Tick += RuleCountdownTimer_Tick;
+            // Start the timer
+            ruleCountdownTimer.Start();
+
+        }
+
+        // Now I will produce an event handler for the Tick event of the timer,
+        // this will be called every second and will check if any rule's timer has run out.
+        private void RuleCountdownTimer_Tick(object sender, EventArgs e)
+        {
+            // This fundamentally only works to track all rules at once using a collection rather than an array
+            // The collection must contain all rules and allow me to add and remove rules as they are generated and expired.
+            // Will need to circle back once I figure out how to add rules1,2,3 into a collection and not an array
+        }
 
     }
-
 }
