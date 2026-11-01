@@ -36,5 +36,13 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
 
         public string Action { get; set; }
         public string Consequence { get; set; }
+
+        // Now I need to override the ToString() method to provide a string representation of the Rules object
+        public override string ToString()
+        {
+            return $"Rule: {Action}, {Consequence}, this rule is active for {TimeLimit} seconds";
+      return $"Rules: , Action = {Action}, Consequence = {Consequence}, ";
+        }
+
     }
 }
