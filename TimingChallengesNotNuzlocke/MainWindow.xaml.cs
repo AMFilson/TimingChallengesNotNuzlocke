@@ -3,6 +3,7 @@
 // Date: 2026-11-01
 // DESC: This class contains the main logic of this TimingChallengesNotNuzlocke project. And data for Actions and Consequences.
 
+using System.Data;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+// Need to add this reference else it cant find my Rules.cs class
+using TimingChallengesNotNuzlocke.TimingChallengeClasses;
 
 namespace TimingChallengesNotNuzlocke
 {
@@ -61,19 +64,29 @@ namespace TimingChallengesNotNuzlocke
         // As well as for setting timers
         private Random randomCounter = new Random();
 
-        // Now I need to create a method that will generate a random action and consequence from the arrays above and display them in the UI.
-        private void GenerateRandomActionAndConsequence()
-        {
-            // A random number is produced under the constraint that it must be the length of the array - 1
-            // This is then used to display the appropriate action and consequence in the UI
-            int randomAction = randomCounter.Next(possibleActions.Length);
-            int randomConsequence = randomCounter.Next(possibleConsequences.Length);
 
-            // Display the generated action and consequence in the UI
-            // gotta remember to set the content of the labels to the generated action and consequence in the XAML UI
-            ActionLabel.Content = possibleActions[randomAction];
-            ConsequenceLabel.Content = possibleConsequences[randomConsequence];
+        // Now when the program starts I want to generate 3 random Rules to be displayed in the UI.
+        // Each rule will have a timer of 5,10, and 15 minutes respectively.
+        // When the timer runs out, the rule will be removed from the UI and a new random rule will be generated.
+        // Each rule should derive from my Rules class
+        private Rules createRandomRule(int timeLimit)
+        {
+            // Generate a random action and consequence from the arrays above
+            string action = possibleActions[randomCounter.Next(possibleActions.Length)];
+            string consequence = possibleConsequences[randomCounter.Next(possibleConsequences.Length)];
+            // Create a new Rule object with the random action, consequence, and time limit
+            Rules newRule = new Rules(timeLimit, action, consequence);
+            return newRule;
         }
+
+        // A function for the first 3 random rules, ill call this when main window initializes
+        private void generateInitialRules()
+        {
+            // Create 3 random rules with time limits of 5, 10, and 15 minutes respectively
+            Rules ruleOne = createRandomRule(300);
+            Rules rulTwo = createRandomRule(600);
+            Rules ruleThree = createRandomRule(900);
+
 
     }
 

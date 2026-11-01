@@ -10,6 +10,7 @@ using System.Net;
 using System.Security.AccessControl;
 using System.Text;
 
+
 namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
 {
     internal class Rules
