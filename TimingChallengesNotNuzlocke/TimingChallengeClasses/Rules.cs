@@ -41,7 +41,7 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
         public override string ToString()
         {
             return $"Rule: {Action}, {Consequence}, this rule is active for {TimeLimit} seconds";
-      return $"Rules: , Action = {Action}, Consequence = {Consequence}, ";
+
         }
 
     }
