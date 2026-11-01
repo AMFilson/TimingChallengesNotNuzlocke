@@ -1,4 +1,10 @@
-﻿using System;
+﻿// Filename: Rules.cs
+// Author: Andrew Filson Jr
+// Date: 2026-11-01
+// DESC: This class defines the rules for a timed challenge in a game. When a specific action is performed,
+//        it triggers a consequence that lasts for a defined set of time.
+
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Security.AccessControl;
