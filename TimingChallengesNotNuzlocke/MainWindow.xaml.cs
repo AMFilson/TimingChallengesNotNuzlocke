@@ -28,6 +28,8 @@ namespace TimingChallengesNotNuzlocke
         {
 
             InitializeComponent();
+            // Call the GenerateInitialRules method to create the first 3 random rules when the main window initializes
+            GenerateInitialRules();
         }
 
         // A simple array of all possible actions which can trigger a consequence during a timing challenge.
@@ -69,7 +71,7 @@ namespace TimingChallengesNotNuzlocke
         // Each rule will have a timer of 5,10, and 15 minutes respectively.
         // When the timer runs out, the rule will be removed from the UI and a new random rule will be generated.
         // Each rule should derive from my Rules class
-        private Rules createRandomRule(int timeLimit)
+        private Rules CreateRandomRule(int timeLimit)
         {
             // Generate a random action and consequence from the arrays above
             string action = possibleActions[randomCounter.Next(possibleActions.Length)];
@@ -80,12 +82,12 @@ namespace TimingChallengesNotNuzlocke
         }
 
         // A function for the first 3 random rules, ill call this when main window initializes
-        private void generateInitialRules()
+        private void GenerateInitialRules()
         {
             // Create 3 random rules with time limits of 5, 10, and 15 minutes respectively
-            Rules ruleOne = createRandomRule(300);
-            Rules rulTwo = createRandomRule(600);
-            Rules ruleThree = createRandomRule(900);
+            Rules ruleOne = CreateRandomRule(300);
+            Rules rulTwo = CreateRandomRule(600);
+            Rules ruleThree = CreateRandomRule(900);
 
 
     }
