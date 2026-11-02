@@ -156,23 +156,30 @@ namespace TimingChallengesNotNuzlocke
                 return;
             }
 
-            // Iterate through the active rules and decrement their time limits
-            for (int ruleIndex = 0; ruleIndex < activeRules.Count; ruleIndex++)
-            {
-                // Here we decrement the time limit of each rule by 1 second and check if the timeLimit is =0
-                // If it is we call the ReplaceRule function to remove the expired rule
-                // and generate a new random rule with the same time limit.
-                Rules currentRule = activeRules[ruleIndex];
-                currentRule.TimeLimit--;
-                // If the time limit has run out, replace the rule
-                if (currentRule.TimeLimit <= 0)
+            // Basic exception handling for any errors I happened to miss when trying to decrement the timers for the rules
+            try
+            {   // Iterate through the active rules and decrement their time limits
+                for (int ruleIndex = 0; ruleIndex < activeRules.Count; ruleIndex++)
                 {
-                    ReplaceExpiredRule(currentRule);
+                    // Here we decrement the time limit of each rule by 1 second and check if the timeLimit is =0
+                    // If it is we call the ReplaceRule function to remove the expired rule
+                    // and generate a new random rule with the same time limit.
+                    Rules currentRule = activeRules[ruleIndex];
+                    currentRule.TimeLimit--;
+                    // If the time limit has run out, replace the rule
+                    if (currentRule.TimeLimit <= 0)
+                    {
+                        ReplaceExpiredRule(currentRule);
+                    }
                 }
+                // Refresh the ListBox to update the displayed time limits on the UI
+                activeRulesList.Items.Refresh();
             }
-            // Refresh the ListBox to update the displayed time limits on the UI
-            activeRulesList.Items.Refresh(); 
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred during timer tick: {ex.Message}");
             }
+        }
 
         private void CloseApplication(object sender, RoutedEventArgs e)
         {
@@ -207,7 +214,9 @@ namespace TimingChallengesNotNuzlocke
         // with the same time limit when the Change Last Rule button is clicked.
         private void ButtonChangeLastRule(object sender, RoutedEventArgs e)
         {
-            try { 
+            // Basic exception handling to catch any potential errors that may occur during the replacement process
+            try
+            { 
                 // Grabs the highest index rule and replaces it with a new random rule with the same time limit.
                 if (activeRules.Count > 0)
                 {
