@@ -18,6 +18,8 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
         // Properties of the Rules class
         // Time limit defines the max time allowed for the challenge in secons
         private int timeLimit;
+        //Initial time limit for tracking and replacing rules
+        private int initialTimeLimit;
         // String assignments serve as the most appropriate data type for the action and consequence properties
         // as they are both textual descriptions of the challenge requirements and outcomes.
         // Action defines a specific action performed by the player that triggers a consequence
@@ -33,6 +35,7 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
         public Rules(int timeLimit, string action, string consequence)
         {
             TimeLimit = timeLimit;
+            InitialTimeLimit = timeLimit;
             Action = action;
             Consequence = consequence;
 
@@ -43,6 +46,9 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
 
         public string Action { get; set; }
         public string Consequence { get; set; }
+
+        // Adding a new property to track Initial Time Limit so I can replace the corresponding rule with another one
+        public int InitialTimeLimit { get; set; }
 
         // I need to format the displayed time so that its more readable for the user and not just seconds
         public string FormattedTimeLimit

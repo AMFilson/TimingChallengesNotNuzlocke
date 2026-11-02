@@ -113,13 +113,16 @@ namespace TimingChallengesNotNuzlocke
 
         // Now I need to create a function that will be called when a rule's timer runs out,
         // this function will remove the rule from the UI and generate a new random rule with the same time limit.
-        private void ReplaceRule(Rules expiredRule)
+        private void ReplaceExpiredRule(Rules expiredRule)
         {
-       
+            // Remove the expired rule from the active rules list
+            activeRules.Remove(expiredRule);
+            // Generate a new random rule with the same time limit
+            activeRules.Add(CreateRandomRule(expiredRule.InitialTimeLimit));
         }
 
         // I need a timer to keep track of the time for all rules.
-        // When the timer for a rule runs out, it will call the ReplaceRule function
+        // When the timer for a rule runs out, it will call the ReplaceExpiredRule function
         // to remove the expired rule and generate a new random rule with the same time limit.
         private void RuleCountdownTimer()
         {
@@ -155,7 +158,7 @@ namespace TimingChallengesNotNuzlocke
                 // If the time limit has run out, replace the rule
                 if (currentRule.TimeLimit <= 0)
                 {
-                    ReplaceRule(currentRule);
+                    ReplaceExpiredRule(currentRule);
                 }
             }
             // Refresh the ListBox to update the displayed time limits on the UI
@@ -189,6 +192,20 @@ namespace TimingChallengesNotNuzlocke
         private void ButtonPauseTimers(object sender, RoutedEventArgs e)
         {
             isChallengeActive = !isChallengeActive;
+        }
+
+        // An event handler that will replace the last created rule with a new random rule
+        // with the same time limit when the Change Last Rule button is clicked.
+        private void ButtonChangeLastRule(object sender, RoutedEventArgs e)
+        {
+            // Grabs the highest index rule and replaces it with a new random rule with the same time limit.
+            if (activeRules.Count > 0)
+            {
+                // grab the index of the last created rule and assign it to a variable
+                Rules lastCreatedRule = activeRules[activeRules.Count - 1];
+                // Call the Replace Expired rule function to remove it and generate a new random rule
+                ReplaceExpiredRule(lastCreatedRule);
+            }
         }
     }
 }
