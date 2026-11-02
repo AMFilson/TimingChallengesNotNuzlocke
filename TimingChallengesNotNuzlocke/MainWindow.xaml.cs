@@ -63,7 +63,7 @@ namespace TimingChallengesNotNuzlocke
 
         // A simple array of all possible actions which can trigger a consequence during a timing challenge.
         // I personally enjoy nuzlockes those are always fun to watch on youtube.
-        private string[] possibleActions = new string[] 
+        private string[] possibleActions = new string[]
         {
 
             "If you touch fire",
@@ -71,7 +71,7 @@ namespace TimingChallengesNotNuzlocke
             "If you screw the pooch",
             "If you smoke a mysterious green plant",
             "If you eat a poisonous mushroom",
-            "If you fall asleep",
+            "If you fall",
             "If you die",
             "If you eat a human corpse",
             "If you sacrifice a black cat",
@@ -216,7 +216,7 @@ namespace TimingChallengesNotNuzlocke
         {
             // Basic exception handling to catch any potential errors that may occur during the replacement process
             try
-            { 
+            {
                 // Grabs the highest index rule and replaces it with a new random rule with the same time limit.
                 if (activeRules.Count > 0)
                 {
@@ -225,10 +225,10 @@ namespace TimingChallengesNotNuzlocke
                     // Call the Replace Expired rule function to remove it and generate a new random rule
                     ReplaceExpiredRule(lastCreatedRule);
                 }
-                else 
+                else
                 {
                     MessageBox.Show("No active rules to replace.");
-                    }
+                }
             }
 
             // If for whatever reason the index is out of range, display an explicit message to indicate that
@@ -242,5 +242,6 @@ namespace TimingChallengesNotNuzlocke
             {
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
+        }
     }
 }
