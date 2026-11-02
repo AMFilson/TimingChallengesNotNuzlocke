@@ -30,7 +30,7 @@
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Grid.RowSpan="2">
             <Button Content="_Start Challenge" HorizontalAlignment="Left" Padding="10,5" Margin="25,275,0,0" VerticalAlignment="Top"  ToolTip="Starts all challenge timers." IsDefault="True" Click="ButtonStartChallenge"/>
-            <Button Content="_Pause All Timers" HorizontalAlignment="Left" Padding="10,5" Margin="34,275,0,0" VerticalAlignment="Top"  ToolTip="Pause or unpause all active challenge timers."/>
+            <Button Content="_Pause All Timers" HorizontalAlignment="Left" Padding="10,5" Margin="34,275,0,0" VerticalAlignment="Top"  ToolTip="Pause or unpause all active challenge timers." Click="ButtonPauseTimers"/>
             <Button Content="_Change Last Rule" HorizontalAlignment="Left" Padding="10,5" Margin="-245,325,0,0" VerticalAlignment="Top" ToolTip="Reroll the action and consequence of the newest rule."/>
             <Button Content="_End Challenge" HorizontalAlignment="Left" Padding="10,5" Margin="-106,325,0,0" VerticalAlignment="Top" Click="CloseApplication" IsCancel="True" ToolTip="Reroll the action and consequence of the newest rule."/>
         </StackPanel>

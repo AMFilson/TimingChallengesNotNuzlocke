@@ -127,6 +127,8 @@ namespace TimingChallengesNotNuzlocke
             ruleCountdownTimer.Interval = TimeSpan.FromSeconds(1);
             // Subscribe to the Tick event of the timer
             ruleCountdownTimer.Tick += RuleCountdownTimerTick;
+            // need this boolean as true else the timer will not start and the rules will not be updated
+            isChallengeActive = true;
             // Start the timer
             ruleCountdownTimer.Start();
 
@@ -171,9 +173,22 @@ namespace TimingChallengesNotNuzlocke
 
         }
 
+        // An event handler that triggers the Rule CountdownTimer function when the Start Challenge button is clicked.
         private void ButtonStartChallenge(object sender, RoutedEventArgs e)
         {
-            isChallengeActive = true;
+            RuleCountdownTimer();
+            // Disable the Start Challenge button after starting the challenge
+            if (sender is Button startChallengeButton)
+            {
+                startChallengeButton.IsEnabled = false;
+            }
+
+        }
+
+        // An event handler that will pause or unpause all active challenge timers when the Pause All Timers button is clicked.
+        private void ButtonPauseTimers(object sender, RoutedEventArgs e)
+        {
+            isChallengeActive = !isChallengeActive;
         }
     }
 }
