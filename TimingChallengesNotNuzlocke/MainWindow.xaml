@@ -5,17 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimingChallengesNotNuzlocke"
         mc:Ignorable="d"
-        Title="Timing Challenges Overlay" Height="450" Width="1000">
+        Title="Timing Challenges Overlay" Height="450" Width="1000"  MinHeight="450" MinWidth="1000">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Label Content="Breath of the Wild Challenges" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="380"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Breath of the Wild Challenges" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
         <Label Content="Active Rules" Margin="28,48,0,0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-        <ListBox x:Name="activeRulesList" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=3}" Margin="10,79,717,164">
+        <ListBox x:Name="activeRulesList" Grid.Row="1" Grid.Column="0" d:ItemsSource="{d:SampleData ItemCount=3}" Margin="10,40,10,120">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -28,14 +32,14 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Grid.RowSpan="2">
-            <Button Content="_Start Challenge" HorizontalAlignment="Left" Padding="10,5" Margin="25,275,0,0" VerticalAlignment="Top"  ToolTip="Starts all challenge timers." IsDefault="True" Click="ButtonStartChallenge"/>
-            <Button Content="_Pause All Timers" HorizontalAlignment="Left" Padding="10,5" Margin="34,275,0,0" VerticalAlignment="Top"  ToolTip="Pause or unpause all active challenge timers." Click="ButtonPauseTimers"/>
-            <Button Content="_Change Last Rule" HorizontalAlignment="Left" Padding="10,5" Margin="-245,325,0,0" VerticalAlignment="Top" ToolTip="Reroll the action and consequence of the newest rule." Click="ButtonChangeLastRule"/>
-            <Button Content="_End Challenge" HorizontalAlignment="Left" Padding="10,5" Margin="-106,325,0,0" VerticalAlignment="Top" Click="CloseApplication" IsCancel="True" ToolTip="Reroll the action and consequence of the newest rule."/>
-        </StackPanel>
+        <UniformGrid Grid.Row="1" Grid.Column="0" Columns="2" VerticalAlignment="Bottom" Margin="10,0,10,10">
+            <Button Content="_Start Challenge" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top"  ToolTip="Starts all challenge timers." IsDefault="True" Click="ButtonStartChallenge"/>
+            <Button Content="_Pause All Timers" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top"  ToolTip="Pause or unpause all active challenge timers." Click="ButtonPauseTimers"/>
+            <Button Content="_Change Last Rule" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top" ToolTip="Reroll the action and consequence of the newest rule." Click="ButtonChangeLastRule"/>
+            <Button Content="_End Challenge" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top" Click="CloseApplication" IsCancel="True" ToolTip="Reroll the action and consequence of the newest rule."/>
+        </UniformGrid>
 
-        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Margin="288,5,10,10"/>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="1" Margin="10,10,10,10"/>
 
     </Grid>
 </Window>
