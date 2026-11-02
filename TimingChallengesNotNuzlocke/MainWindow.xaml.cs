@@ -40,6 +40,15 @@ namespace TimingChallengesNotNuzlocke
         // is currently active or not, this will be used to pause and unpause all timers.
         private bool isChallengeActive = false;
 
+        // 3 properties for the time limits of the 3 rules so I can remove the hardcoded values
+        // and make it easier to change them in the future.
+        // 5min in seconds
+        private const int FirstRuleTimeLimit = 300;
+        // 10min in seconds
+        private const int SecondRuleTimeLimit = 600;
+        // 15min in seconds
+        private const int ThirdRuleTimeLimit = 900;
+
         public MainWindow()
         {
 
@@ -106,9 +115,9 @@ namespace TimingChallengesNotNuzlocke
         private void GenerateInitialRules()
         {
             // Create 3 random rules with time limits of 5, 10, and 15 minutes respectively
-            activeRules.Add(CreateRandomRule(300));
-            activeRules.Add(CreateRandomRule(600));
-            activeRules.Add(CreateRandomRule(900));
+            activeRules.Add(CreateRandomRule(FirstRuleTimeLimit));
+            activeRules.Add(CreateRandomRule(SecondRuleTimeLimit));
+            activeRules.Add(CreateRandomRule(ThirdRuleTimeLimit));
         }
 
         // Now I need to create a function that will be called when a rule's timer runs out,
