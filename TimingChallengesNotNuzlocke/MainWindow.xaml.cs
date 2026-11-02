@@ -31,19 +31,31 @@ namespace TimingChallengesNotNuzlocke
         // I need a timer to keep track of the time for all rules.
         private DispatcherTimer ruleCountdownTimer = new DispatcherTimer();
 
+        // A collection that contains all active rules, used to dynamically add and remove rules from the UI
+        // As they are generated and expired. ObservableCollection is used so that the UI
+        // can automatically update when the collection changes.
         private ObservableCollection<Rules> activeRules = new ObservableCollection<Rules>();
+
+        // A property used to indicate whether the challenge
+        // is currently active or not, this will be used to pause and unpause all timers.
+        private bool isChallengeActive = false;
 
         public MainWindow()
         {
 
             InitializeComponent();
+
             // Call the GenerateInitialRules method to create the first 3 random rules when the main window initializes
             GenerateInitialRules();
+
+            //connect the activeRules collection to the ListBox in the UI
+            activeRulesList.ItemsSource = activeRules;
         }
 
         // A simple array of all possible actions which can trigger a consequence during a timing challenge.
         // I personally enjoy nuzlockes those are always fun to watch on youtube.
-        private string[] possibleActions = new string[] {
+        private string[] possibleActions = new string[] 
+        {
 
             "If you touch fire",
             "If you kiss a frog",
@@ -114,7 +126,7 @@ namespace TimingChallengesNotNuzlocke
             // Set the timer interval to 1 second
             ruleCountdownTimer.Interval = TimeSpan.FromSeconds(1);
             // Subscribe to the Tick event of the timer
-            ruleCountdownTimer.Tick += RuleCountdownTimer_Tick;
+            ruleCountdownTimer.Tick += RuleCountdownTimerTick;
             // Start the timer
             ruleCountdownTimer.Start();
 
@@ -122,18 +134,46 @@ namespace TimingChallengesNotNuzlocke
 
         // Now I will produce an event handler for the Tick event of the timer,
         // this will be called every second and will check if any rule's timer has run out.
-        private void RuleCountdownTimer_Tick(object sender, EventArgs e)
+        private void RuleCountdownTimerTick(object sender, EventArgs e)
         {
-            // This fundamentally only works to track all rules at once using a collection rather than an array
-            // The collection must contain all rules and allow me to add and remove rules as they are generated and expired.
-            // Will need to circle back once I figure out how to add rules1,2,3 into a collection and not an array
+            // Check if the challenge is active, if not, return early
+            if (!isChallengeActive)
+            {
+                return;
+            }
+
+            // Iterate through the active rules and decrement their time limits
+            for (int ruleIndex = 0; ruleIndex < activeRules.Count; ruleIndex++)
+            {
+                // Here we decrement the time limit of each rule by 1 second and check if the timeLimit is =0
+                // If it is we call the ReplaceRule function to remove the expired rule
+                // and generate a new random rule with the same time limit.
+                Rules currentRule = activeRules[ruleIndex];
+                currentRule.TimeLimit--;
+                // If the time limit has run out, replace the rule
+                if (currentRule.TimeLimit <= 0)
+                {
+                    ReplaceRule(currentRule);
+                }
+            }
+            // Refresh the ListBox to update the displayed time limits on the UI
+            activeRulesList.Items.Refresh(); 
+            }
+
+        private void CloseApplication(object sender, RoutedEventArgs e)
+        {
+            //End and exit application
+            // optting for this since its a 1 window application
+            Application.Current.Shutdown();
+
+            //shutdown only 1 window
+            //this.Close();
+
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ButtonStartChallenge(object sender, RoutedEventArgs e)
         {
-
+            isChallengeActive = true;
         }
-
-
     }
 }
