@@ -5,8 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimingChallengesNotNuzlocke"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Timing Challenges Overlay" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label Content="Breath of the Wild Challenges" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <Label Content="Active Rules" Margin="28,48,0,0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+        <ListBox Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,79,633,164"/>
+        <StackPanel Grid.Row="1" Orientation="Vertical">
+            <Button Content="Pause All Timers" HorizontalAlignment="Left" Padding="10,5" Margin="34,300,0,0" VerticalAlignment="Top" Click="Button_Click" IsCancel="True" ToolTip="Pause or unpause all active challenge timers."/>
+            <Button Content="Change Last Rule" HorizontalAlignment="Left" Padding="10,5" Margin="31,10,0,0" VerticalAlignment="Top" Click="Button_Click" IsCancel="True" ToolTip="Reroll the action and consequence of the newest rule."/>
+         
+        </StackPanel>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Margin="172,5,0,0"/>
 
     </Grid>
 </Window>

@@ -3,6 +3,7 @@
 // Date: 2026-11-01
 // DESC: This class contains the main logic of this TimingChallengesNotNuzlocke project. And data for Actions and Consequences.
 
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Text;
 using System.Windows;
@@ -29,6 +30,8 @@ namespace TimingChallengesNotNuzlocke
 
         // I need a timer to keep track of the time for all rules.
         private DispatcherTimer ruleCountdownTimer = new DispatcherTimer();
+
+        private ObservableCollection<Rules> activeRules = new ObservableCollection<Rules>();
 
         public MainWindow()
         {
@@ -91,9 +94,9 @@ namespace TimingChallengesNotNuzlocke
         private void GenerateInitialRules()
         {
             // Create 3 random rules with time limits of 5, 10, and 15 minutes respectively
-            Rules ruleOne = CreateRandomRule(300);
-            Rules rulTwo = CreateRandomRule(600);
-            Rules ruleThree = CreateRandomRule(900);
+            activeRules.Add(CreateRandomRule(300));
+            activeRules.Add(CreateRandomRule(600));
+            activeRules.Add(CreateRandomRule(900));
         }
 
         // Now I need to create a function that will be called when a rule's timer runs out,
@@ -125,6 +128,12 @@ namespace TimingChallengesNotNuzlocke
             // The collection must contain all rules and allow me to add and remove rules as they are generated and expired.
             // Will need to circle back once I figure out how to add rules1,2,3 into a collection and not an array
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
 
     }
 }
