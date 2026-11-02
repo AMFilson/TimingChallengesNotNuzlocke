@@ -198,14 +198,31 @@ namespace TimingChallengesNotNuzlocke
         // with the same time limit when the Change Last Rule button is clicked.
         private void ButtonChangeLastRule(object sender, RoutedEventArgs e)
         {
-            // Grabs the highest index rule and replaces it with a new random rule with the same time limit.
-            if (activeRules.Count > 0)
-            {
-                // grab the index of the last created rule and assign it to a variable
-                Rules lastCreatedRule = activeRules[activeRules.Count - 1];
-                // Call the Replace Expired rule function to remove it and generate a new random rule
-                ReplaceExpiredRule(lastCreatedRule);
+            try { 
+                // Grabs the highest index rule and replaces it with a new random rule with the same time limit.
+                if (activeRules.Count > 0)
+                {
+                    // grab the the last created rule based off index and assign it to a variable
+                    Rules lastCreatedRule = activeRules[activeRules.Count - 1];
+                    // Call the Replace Expired rule function to remove it and generate a new random rule
+                    ReplaceExpiredRule(lastCreatedRule);
+                }
+                else 
+                {
+                    MessageBox.Show("No active rules to replace.");
+                    }
             }
-        }
+
+            // If for whatever reason the index is out of range, display an explicit message to indicate that
+            catch (IndexOutOfRangeException ex)
+            {
+                MessageBox.Show($"Index out of range error: {ex.Message}");
+            }
+            // General exception handling to catch any unexpected errors that may occur
+            // during the replacement process
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
     }
 }

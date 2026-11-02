@@ -13,20 +13,19 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="380"/>
+            <ColumnDefinition Width="420"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Label Content="Breath of the Wild Challenges" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <Label Content="Active Rules" Margin="28,48,0,0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label Content="Active Rules" Margin="10,10,0,0" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
         <ListBox x:Name="activeRulesList" Grid.Row="1" Grid.Column="0" d:ItemsSource="{d:SampleData ItemCount=3}" Margin="10,40,10,120">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Action}" Margin="2"/>
-                        <TextBlock Text="{Binding Consequence}" Margin="2"/>
-                        <TextBlock Text=" for " Margin="2"/>
-                        <TextBlock Text="{Binding FormattedTimeLimit}" Margin="2"/>
+                        <!--By using binding with no assignments it defaults to my Rules.toString() overridden method-->
+                        <TextBlock Text="{Binding}" Margin="2"/>
+
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

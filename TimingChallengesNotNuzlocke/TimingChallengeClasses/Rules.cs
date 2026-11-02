@@ -53,6 +53,7 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
         // I need to format the displayed time so that its more readable for the user and not just seconds
         public string FormattedTimeLimit
         {
+            // Need to use an explicit getter definition to convert the time limit from seconds to a readable format
             get
             {
                 TimeSpan challangeTimeLimit = TimeSpan.FromSeconds(TimeLimit);
@@ -63,7 +64,7 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
         // Now I need to override the ToString() method to provide a string representation of the Rules object
         public override string ToString()
         {
-            return $"Rule: {Action}, {Consequence}, this rule is active for ";
+            return $"Rule: {Action}, {Consequence}, active for: {FormattedTimeLimit}";
 
         }
 
