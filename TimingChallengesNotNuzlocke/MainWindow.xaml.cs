@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 
 // Need to add this reference else it cant find my Rules.cs class
+// Just telling it where to go, ie. referencing the namespace which is defined at the top of the Rules.cs file
 using TimingChallengesNotNuzlocke.TimingChallengeClasses;
 
 namespace TimingChallengesNotNuzlocke
@@ -28,8 +29,7 @@ namespace TimingChallengesNotNuzlocke
     public partial class MainWindow : Window
     {
 
-        // I need a timer to keep track of the time for all rules.
-        private DispatcherTimer ruleCountdownTimer = new DispatcherTimer();
+
 
         // A collection that contains all active rules, used to dynamically add and remove rules from the UI
         // As they are generated and expired. ObservableCollection is used so that the UI
@@ -61,8 +61,9 @@ namespace TimingChallengesNotNuzlocke
             activeRulesList.ItemsSource = activeRules;
         }
 
-        // A simple array of all possible actions which can trigger a consequence during a timing challenge.
+        // A one dimensional array of all possible actions which can trigger a consequence during a timing challenge.
         // I personally enjoy nuzlockes those are always fun to watch on youtube.
+        // In the future I'd like to add positive consequences as well
         private string[] possibleActions = new string[]
         {
 
@@ -73,28 +74,29 @@ namespace TimingChallengesNotNuzlocke
             "If you eat a poisonous mushroom",
             "If you fall",
             "If you die",
-            "If you eat a human corpse",
-            "If you sacrifice a black cat",
+            "If you drink a potion",
+            "If you hurt a cat",
             "If you meet a mermaid"
         };
 
         // A simple array of all possible consequences which can be triggered by a specific action during a timing challenge.
         private string[] possibleConsequences = new string[]
         {
-            "you must discard three shields",
-            "you must fight all enemies without any armor",
-            "you must fight all enemies without any weapons",
-            "you must play using your feet",
-            "you must play blindfolded",
-            "you cannot use any healing items",
-            "you must run away from all enemies",
-            "you must discard all your items but one",
-            "you must restart from your last checkpoint"
+            "discard three shields",
+            "fight without any armor",
+            "fight without any weapons",
+            "play using your feet",
+            "play blindfolded",
+            "discard all healing items",
+            "run away from all enemies",
+            "discard all items but one",
+            "restart from your last checkpoint"
         };
 
         // I need an object for random number generation to select a random action and consequence from the arrays above.
         // As well as for setting timers
-        private Random randomCounter = new Random();
+        // set to readonly no need for anyone to be able to reassign
+        private readonly Random randomNumberGenerator = new Random();
 
 
         // Now when the program starts I want to generate 3 random Rules to be displayed in the UI.
@@ -104,53 +106,71 @@ namespace TimingChallengesNotNuzlocke
         private Rules CreateRandomRule(int timeLimit)
         {
             // Generate a random action and consequence from the arrays above
-            string action = possibleActions[randomCounter.Next(possibleActions.Length)];
-            string consequence = possibleConsequences[randomCounter.Next(possibleConsequences.Length)];
+            string action = possibleActions[randomNumberGenerator.Next(possibleActions.Length)];
+            string consequence = possibleConsequences[randomNumberGenerator.Next(possibleConsequences.Length)];
             // Create a new Rule object with the random action, consequence, and time limit
             Rules newRule = new Rules(timeLimit, action, consequence);
             return newRule;
         }
 
         // A function for the first 3 random rules, ill call this when main window initializes
+        // This can be easily converted into an AddRule() function in the future but I will want to define a limit for  of additions
+        // my own understanding and simplicity.
         private void GenerateInitialRules()
         {
-            // Create 3 random rules with time limits of 5, 10, and 15 minutes respectively
+            // Create 3 random rules with modular time limits and insert the values into the activeRules collection
             activeRules.Add(CreateRandomRule(FirstRuleTimeLimit));
             activeRules.Add(CreateRandomRule(SecondRuleTimeLimit));
             activeRules.Add(CreateRandomRule(ThirdRuleTimeLimit));
         }
 
-        // Now I need to create a function that will be called when a rule's timer runs out,
+        // a function that will be called when a rule's timer runs out,
         // this function will remove the rule from the UI and generate a new random rule with the same time limit.
         private void ReplaceExpiredRule(Rules expiredRule)
         {
             // Remove the expired rule from the active rules list
             activeRules.Remove(expiredRule);
-            // Generate a new random rule with the same time limit
+            // Generate a new random rule object with the same time limit as the rule that just expired
             activeRules.Add(CreateRandomRule(expiredRule.InitialTimeLimit));
         }
 
-        // I need a timer to keep track of the time for all rules.
-        // When the timer for a rule runs out, it will call the ReplaceExpiredRule function
-        // to remove the expired rule and generate a new random rule with the same time limit.
-        private void RuleCountdownTimer()
-        {
-            // Set the timer interval to 1 second
-            ruleCountdownTimer.Interval = TimeSpan.FromSeconds(1);
-            // Subscribe to the Tick event of the timer
-            ruleCountdownTimer.Tick += RuleCountdownTimerTick;
-            // need this boolean as true else the timer will not start and the rules will not be updated
-            isChallengeActive = true;
-            // Start the timer
-            ruleCountdownTimer.Start();
+        // use the DispatcherTimer class to create a timer that will decrement the time limit of each rule every second.
+        private DispatcherTimer ruleCountdownTimer = new DispatcherTimer();
 
+        // Decrement rate in seconds for RuleCountdownTimer
+        private int decrementRate = 1;
+
+        // Start the countdown timer for all active rules, this will be called when the Start Challenge button is clicked.
+        // When the timer for a rule runs out, it will call the ReplaceExpiredRule function
+        // to remove the expired rule and generate a new random rule with the same time limit
+        // Basically just runs a timer that uses the RuleCountdownTimerTick() function every 1 second to
+        // decrement the value of each rules TimeLimit by 1, every 1 second.
+        private void StartRuleCountdownTimer()
+        {
+            try
+            {
+                // I'm placing a try catch here since the to catch any ArgumentOutofRange exceptions That could occur 
+                // Set the timer interval to whatever in seconds using FromSeconds() method
+                ruleCountdownTimer.Interval = TimeSpan.FromSeconds(decrementRate);
+                // Subscribe to the Tick event of the timer
+                ruleCountdownTimer.Tick += RuleCountdownTimerTick;
+                // need this boolean as true else the timer will not start and the rules will not be updated
+                isChallengeActive = true;
+                // Start the timer
+                ruleCountdownTimer.Start();
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                MessageBox.Show($"Wallahi bro, an ArgumentOutOfRange exception occurred: {ex.Message}");
+
+            }
         }
 
-        // Now I will produce an event handler for the Tick event of the timer,
+        // an event handler for the Tick event of the timer,
         // this will be called every second and will check if any rule's timer has run out.
         private void RuleCountdownTimerTick(object sender, EventArgs e)
         {
-            // Check if the challenge is active, if not, return early
+            // Check if the challenge is active, if so it decrementsbased off the decrementRate variable else it remains paused
             if (!isChallengeActive)
             {
                 return;
@@ -159,16 +179,20 @@ namespace TimingChallengesNotNuzlocke
             // Basic exception handling for any errors I happened to miss when trying to decrement the timers for the rules
             try
             {   // Iterate through the active rules and decrement their time limits
-                for (int ruleIndex = 0; ruleIndex < activeRules.Count; ruleIndex++)
+                // There should be no way to get an index out of range error here since
+                // the for loop is based off the activeRules.Count property and index starts at 0 to Count -1
+                // but exception handling is used here to display applicability and error 
+                for (int individualActiveRule = 0; individualActiveRule < activeRules.Count; individualActiveRule++)
                 {
-                    // Here we decrement the time limit of each rule by 1 second and check if the timeLimit is =0
+                    // Here we decrement the time limit of each rule and check if the timeLimit is <= 0
                     // If it is we call the ReplaceRule function to remove the expired rule
                     // and generate a new random rule with the same time limit.
-                    Rules currentRule = activeRules[ruleIndex];
+                    Rules currentRule = activeRules[individualActiveRule];
                     currentRule.TimeLimit--;
                     // If the time limit has run out, replace the rule
                     if (currentRule.TimeLimit <= 0)
                     {
+
                         ReplaceExpiredRule(currentRule);
                     }
                 }
@@ -177,10 +201,12 @@ namespace TimingChallengesNotNuzlocke
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred during timer tick: {ex.Message}");
+                // I'd like to know exactly where I messed up
+                MessageBox.Show($"An error occurred with the RuleCountdownTimerTick() function: {ex.Message}");
             }
         }
 
+        // An event handler that shuts down the application when the Close button is clicked
         private void CloseApplication(object sender, RoutedEventArgs e)
         {
             //End and exit application
@@ -195,7 +221,8 @@ namespace TimingChallengesNotNuzlocke
         // An event handler that triggers the Rule CountdownTimer function when the Start Challenge button is clicked.
         private void ButtonStartChallenge(object sender, RoutedEventArgs e)
         {
-            RuleCountdownTimer();
+            // Set the parameters, create a timer, and start the countdown for all rules.
+            StartRuleCountdownTimer();
             // Disable the Start Challenge button after starting the challenge
             if (sender is Button startChallengeButton)
             {
@@ -207,6 +234,7 @@ namespace TimingChallengesNotNuzlocke
         // An event handler that will pause or unpause all active challenge timers when the Pause All Timers button is clicked.
         private void ButtonPauseTimers(object sender, RoutedEventArgs e)
         {
+            //flip flop, hip hop
             isChallengeActive = !isChallengeActive;
         }
 

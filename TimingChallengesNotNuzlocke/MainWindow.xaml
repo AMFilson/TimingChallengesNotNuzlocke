@@ -5,21 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimingChallengesNotNuzlocke"
         mc:Ignorable="d"
-        Title="Timing Challenges Overlay" Height="450" Width="1000"  MinHeight="450" MinWidth="1000">
+        Title="Timing Challenges Overlay" Height="450" Width="1100"  MinHeight="450" MinWidth="1000">
     <Grid>
+        <!-- Define the layout of the window using 2 rows and 2 columns.-->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="420"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Label Content="Breath of the Wild Challenges" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Label Content="Andrew's Breath of the Wild Challenges" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
         <Label Content="Active Rules" Margin="10,10,0,0" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-
-        <ListBox x:Name="activeRulesList" Grid.Row="1" Grid.Column="0" d:ItemsSource="{d:SampleData ItemCount=3}" Margin="10,40,10,120">
+        <!--I use the listbox here to display the active rules generated in MainWindow.xaml.cs-->
+        <!-- Each rule is an object with an overriden ToString() method for custom output-->
+        <ListBox x:Name="activeRulesList" Grid.Row="1" Grid.Column="0" d:ItemsSource="{d:SampleData ItemCount=3}" Margin="10,40,10,120" TabIndex="0" ToolTip="Displays all active rules of the Game.">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -30,15 +31,16 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-
+        
+        <!--I want all columns and rows to be evenly spaced so opting for UniformGrid vs Grid-->
         <UniformGrid Grid.Row="1" Grid.Column="0" Columns="2" VerticalAlignment="Bottom" Margin="10,0,10,10">
-            <Button Content="_Start Challenge" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top"  ToolTip="Starts all challenge timers." IsDefault="True" Click="ButtonStartChallenge"/>
-            <Button Content="_Pause All Timers" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top"  ToolTip="Pause or unpause all active challenge timers." Click="ButtonPauseTimers"/>
-            <Button Content="_Change Last Rule" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top" ToolTip="Reroll the action and consequence of the newest rule." Click="ButtonChangeLastRule"/>
-            <Button Content="_End Challenge" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top" Click="CloseApplication" IsCancel="True" ToolTip="Reroll the action and consequence of the newest rule."/>
+            <Button Content="_Start Challenge" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top"  ToolTip="Starts all challenge timers." IsDefault="True" Click="ButtonStartChallenge" TabIndex="1"/>
+            <Button Content="_Pause All Timers" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top"  ToolTip="Pause or unpause all active challenge timers." Click="ButtonPauseTimers" TabIndex="2"/>
+            <Button Content="_Change Last Rule" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top" ToolTip="Reroll the action and consequence of the newest rule." Click="ButtonChangeLastRule" TabIndex="3"/>
+            <Button Content="_End Challenge" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top" Click="CloseApplication" IsCancel="True" ToolTip="Reroll the action and consequence of the newest rule." TabIndex="4"/>
         </UniformGrid>
 
-        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="1" Margin="10,10,10,10"/>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="1" Margin="10,10,10,10" ToolTip="Gameplay footage goes here in post."/>
 
     </Grid>
 </Window>

@@ -31,7 +31,7 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
         public Rules() { }
         
 
-        // Constructor to initialize the Rules class with a time limit
+        // parameterized constructor to initialize the Rules class with a time limit
         public Rules(int timeLimit, string action, string consequence)
         {
             TimeLimit = timeLimit;
@@ -64,7 +64,10 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
         // Now I need to override the ToString() method to provide a string representation of the Rules object
         public override string ToString()
         {
-            return $"Rule: {Action}, {Consequence}, active for: {FormattedTimeLimit}";
+            // A simplified string formatting of all rules for how they will be displayed in the ListBox of the MainWindow.xaml
+            // This will be displayed via the ListBox.ItemTemplate binding to the Rules object in the MainWindow.xaml.cs file
+            // Each rule object is placed in an ObservableCollection which is bound to the Listbox via the name of the ObservableCollection variable
+            return $"{Action}, {Consequence}, duration: {FormattedTimeLimit}";
 
         }
 
