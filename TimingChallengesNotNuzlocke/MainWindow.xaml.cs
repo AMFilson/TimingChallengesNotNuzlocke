@@ -104,12 +104,17 @@ namespace TimingChallengesNotNuzlocke
         // When the timer runs out, the rule will be removed from the UI and a new random rule will be generated.
         // Each rule should derive from my Rules class
         private Rules CreateRandomRule(int timeLimit)
+
+           
         {
             // Generate a random action and consequence from the arrays above
+            // In the existing form the strings below utilize Next(int maxValue) overload
+            // omitting a requirement to otherwise implement selection statements and error handling
             string action = possibleActions[randomNumberGenerator.Next(possibleActions.Length)];
             string consequence = possibleConsequences[randomNumberGenerator.Next(possibleConsequences.Length)];
             // Create a new Rule object with the random action, consequence, and time limit
             Rules newRule = new Rules(timeLimit, action, consequence);
+           
             return newRule;
         }
 

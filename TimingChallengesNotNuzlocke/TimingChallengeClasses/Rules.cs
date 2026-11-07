@@ -31,7 +31,8 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
         public Rules() { }
         
 
-        // parameterized constructor to initialize the Rules class with a time limit
+        // parameterized constructor to initialize the Rules class with a time limit, action and consequence
+
         public Rules(int timeLimit, string action, string consequence)
         {
             TimeLimit = timeLimit;
@@ -56,6 +57,9 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
             // Need to use an explicit getter definition to convert the time limit from seconds to a readable format
             get
             {
+                // TimeSpan is class which I can produce objects from
+                // It's unique in that it represents an interval of time
+                // DateTime and DateTimeOffest can be used to represent calendar dates
                 TimeSpan challangeTimeLimit = TimeSpan.FromSeconds(TimeLimit);
                 return challangeTimeLimit.ToString(@"mm\:ss");
             }
