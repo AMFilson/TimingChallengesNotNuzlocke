@@ -17,15 +17,15 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
     {
         // Properties of the Rules class
         // Time limit defines the max time allowed for the challenge in secons
-        private int timeLimit;
+        private int timeLimit = 0;
         //Initial time limit for tracking and replacing rules
-        private int initialTimeLimit;
+        private int initialTimeLimit = 0;
         // String assignments serve as the most appropriate data type for the action and consequence properties
         // as they are both textual descriptions of the challenge requirements and outcomes.
         // Action defines a specific action performed by the player that triggers a consequence
-        private string action;
+        private string action = "";
         // a consequence defines the penalty or outcome that occurs if the player fails to perform the action within the time limit
-        private string consequence;
+        private string consequence = "";
 
         // default constructor for Rules so it can be instantiated without parameters
         public Rules() { }
