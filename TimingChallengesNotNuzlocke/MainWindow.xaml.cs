@@ -158,15 +158,24 @@ namespace TimingChallengesNotNuzlocke
                 // Set the timer interval to whatever in seconds using FromSeconds() method
                 ruleCountdownTimer.Interval = TimeSpan.FromSeconds(decrementRate);
                 // Subscribe to the Tick event of the timer
+                // ruleCountdownTimer.Tick serves as an event here, firing off based on decrement rate defined in interval
+                // += says every time this event fires run the corresponding method RuleCountDownTimerTick
+                // No need to add the () at the end of RuleCountDownTimerTick since I have it setup as an event handler
+                // Rather than your typical function
                 ruleCountdownTimer.Tick += RuleCountdownTimerTick;
                 // need this boolean as true else the timer will not start and the rules will not be updated
                 isChallengeActive = true;
                 // Start the timer
                 ruleCountdownTimer.Start();
             }
-            catch (ArgumentOutOfRangeException ex)
+            catch (ArgumentOutOfRangeException)
             {
-                MessageBox.Show($"Wallahi bro, an ArgumentOutOfRange exception occurred: {ex.Message}");
+                MessageBox.Show($"Wallahi bro, an ArgumentOutOfRange exception occurred");
+
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show($"A genernal Argument Exception occurred");
 
             }
         }
@@ -207,7 +216,7 @@ namespace TimingChallengesNotNuzlocke
             catch (Exception ex)
             {
                 // I'd like to know exactly where I messed up
-                MessageBox.Show($"An error occurred with the RuleCountdownTimerTick() function: {ex.Message}");
+                MessageBox.Show($"An error occurred with the RuleCountdownTimerTick function: {ex.Message}");
             }
         }
 
@@ -271,6 +280,8 @@ namespace TimingChallengesNotNuzlocke
             }
             // General exception handling to catch any unexpected errors that may occur
             // during the replacement process
+            // ex is what is gets the message describing the exception but not sure what the prompt
+            // would look like without the ex
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred: {ex.Message}");

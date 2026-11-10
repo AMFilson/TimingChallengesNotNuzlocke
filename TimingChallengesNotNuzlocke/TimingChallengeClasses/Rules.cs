@@ -70,7 +70,7 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
         {
             // A simplified string formatting of all rules for how they will be displayed in the ListBox of the MainWindow.xaml
             // This will be displayed via the ListBox.ItemTemplate binding to the Rules object in the MainWindow.xaml.cs file
-            // Each rule object is placed in an ObservableCollection which is bound to the Listbox via the name of the ObservableCollection variable
+            // Each rule object is placed in an ObservableCollection which is bound to the Listbox via the name of the ObservableCollection object
             return $"{Action}, {Consequence}, duration: {FormattedTimeLimit}";
 
         }
