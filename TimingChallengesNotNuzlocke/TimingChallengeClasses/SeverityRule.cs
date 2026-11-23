@@ -12,5 +12,7 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
 {
     internal class SeverityRule
     {
+
+         
     }
 }

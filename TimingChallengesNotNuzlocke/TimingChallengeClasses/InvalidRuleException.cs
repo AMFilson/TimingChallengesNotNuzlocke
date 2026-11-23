@@ -21,7 +21,7 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
         /// <param name="message">The reason that the rule is invalid.</param>
         public InvalidRuleException(string messageValue) : base(messageValue)
         {
-            message = "Invalid Rule: " + message;
+            message = "Invalid Rule: " + messageValue;
         }
 
         /// <summary>
