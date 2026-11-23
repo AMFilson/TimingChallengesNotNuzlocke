@@ -13,13 +13,14 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
     internal class SeverityRule : Rule
     {
         // just a simple index value containing the severity level
-        private int severitylevel;
+        private int severityLevel;
         private int actionRating;
         private int consequenceRating;
 
         // parameterized constructor for SeverityRule
-        public SeverityRule(int timeLimit, string action, string consequence, int actionRating, int consequenceRating) : base( timeLimit, action, consequence)
+        public SeverityRule(int timeLimit, string action, string consequence, int actionRating, int consequenceRating, int severityLevel) : base( timeLimit, action, consequence)
         {
+            //Exception handling to throw for the new class, need to catch it in mainwindow.xaml.cs still
             if (actionRating < 1 || actionRating > 10)
             {
                 throw new InvalidRuleException("Action ease rating must be between 1 and 10.");
@@ -34,11 +35,13 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
             ActionRating = actionRating;
             ConsequenceRating = consequenceRating;
             
+            
 
             // a calculation to derive the severity level based off the action level and consequence level
             // then just round it to an int value
             double average = (actionRating + consequenceRating) / 2.0;
-            SeverityLevel = (int)Math.Round(average, MidpointRounding.AwayFromZero);
+            severityLevel = (int)Math.Round(average, MidpointRounding.AwayFromZero);
+            SeverityLevel = severityLevel;
         }
 
         //overriden toString method for severity level IF IT WORKED
