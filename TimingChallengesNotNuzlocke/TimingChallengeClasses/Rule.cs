@@ -26,14 +26,16 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
         // A counter to track the amount of rules
         protected static int ruleCount = 0;
 
+        protected static int count;
+
 
         // default constructor for Rules so it can be instantiated without parameters
-        public Rule() { }
+        protected Rule() { }
 
 
         // parameterized constructor to initialize the Rules class with a time limit, action and consequence
 
-        public Rule(int timeLimit, string action, string consequence)
+        protected Rule(int timeLimit, string action, string consequence)
         {
             TimeLimit = timeLimit;
             InitialTimeLimit = timeLimit;
@@ -51,6 +53,12 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
 
         // Adding a new property to track Initial Time Limit so I can replace the corresponding rule with another one
         public int InitialTimeLimit { get; set; }
+
+        //just tracks total number of rules created so far
+        protected static int Count { get
+
+            { return ruleCount; }
+        }
 
         // I need to format the displayed time so that its more readable for the user and not just seconds
         public string FormattedTimeLimit
