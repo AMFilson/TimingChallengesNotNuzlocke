@@ -34,7 +34,7 @@ namespace TimingChallengesNotNuzlocke
         // A collection that contains all active rules, used to dynamically add and remove rules from the UI
         // As they are generated and expired. ObservableCollection is used so that the UI
         // can automatically update when the collection changes.
-        private ObservableCollection<Rules> activeRules = new ObservableCollection<Rules>();
+        private ObservableCollection<StandardRule> activeRules = new ObservableCollection<StandardRule>();
 
         // A property used to indicate whether the challenge
         // is currently active or not, this will be used to pause and unpause all timers.
@@ -103,7 +103,7 @@ namespace TimingChallengesNotNuzlocke
         // Each rule will have a timer of 5,10, and 15 minutes respectively.
         // When the timer runs out, the rule will be removed from the UI and a new random rule will be generated.
         // Each rule should derive from my Rules class
-        private Rules CreateRandomRule(int timeLimit)
+        private StandardRule CreateRandomRule(int timeLimit)
 
            
         {
@@ -113,7 +113,7 @@ namespace TimingChallengesNotNuzlocke
             string action = possibleActions[randomNumberGenerator.Next(possibleActions.Length)];
             string consequence = possibleConsequences[randomNumberGenerator.Next(possibleConsequences.Length)];
             // Create a new Rule object with the random action, consequence, and time limit
-            Rules newRule = new Rules(timeLimit, action, consequence);
+            StandardRule newRule = new StandardRule(timeLimit, action, consequence);
            
             return newRule;
         }
@@ -131,7 +131,7 @@ namespace TimingChallengesNotNuzlocke
 
         // a function that will be called when a rule's timer runs out,
         // this function will remove the rule from the UI and generate a new random rule with the same time limit.
-        private void ReplaceExpiredRule(Rules expiredRule)
+        private void ReplaceExpiredRule(StandardRule expiredRule)
         {
             // Remove the expired rule from the active rules list
             activeRules.Remove(expiredRule);
@@ -201,7 +201,7 @@ namespace TimingChallengesNotNuzlocke
                     // Here we decrement the time limit of each rule and check if the timeLimit is <= 0
                     // If it is we call the ReplaceRule function to remove the expired rule
                     // and generate a new random rule with the same time limit.
-                    Rules currentRule = activeRules[individualActiveRule];
+                    StandardRule currentRule = activeRules[individualActiveRule];
                     currentRule.TimeLimit--;
                     // If the time limit has run out, replace the rule
                     if (currentRule.TimeLimit <= 0)
@@ -263,7 +263,7 @@ namespace TimingChallengesNotNuzlocke
                 if (activeRules.Count > 0)
                 {
                     // grab the the last created rule based off index and assign it to a variable
-                    Rules lastCreatedRule = activeRules[activeRules.Count - 1];
+                    StandardRule lastCreatedRule = activeRules[activeRules.Count - 1];
                     // Call the Replace Expired rule function to remove it and generate a new random rule
                     ReplaceExpiredRule(lastCreatedRule);
                 }

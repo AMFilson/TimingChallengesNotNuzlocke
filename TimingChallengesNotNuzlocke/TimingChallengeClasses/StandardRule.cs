@@ -1,6 +1,7 @@
-﻿// Filename: Rules.cs
+﻿// Filename: StandardRule.cs
 // Author: Andrew Filson Jr
 // Date: 2026-11-01
+// Updated: 2026-11-23
 // DESC: This class defines the rules for a timed challenge in a game. When a specific action is performed,
 //        it triggers a consequence that lasts for a defined set of time.
 
@@ -13,7 +14,7 @@ using System.Text;
 
 namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
 {
-    internal class Rules
+    internal class StandardRule
     {
         // Properties of the Rules class
         // Time limit defines the max time allowed for the challenge in secons
@@ -28,12 +29,12 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
         private string consequence = "";
 
         // default constructor for Rules so it can be instantiated without parameters
-        public Rules() { }
+        public StandardRule() { }
         
 
         // parameterized constructor to initialize the Rules class with a time limit, action and consequence
 
-        public Rules(int timeLimit, string action, string consequence)
+        public StandardRule(int timeLimit, string action, string consequence)
         {
             TimeLimit = timeLimit;
             InitialTimeLimit = timeLimit;
