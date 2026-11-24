@@ -44,11 +44,11 @@ namespace TimingChallengesNotNuzlocke
         // 3 properties for the time limits of the 3 rules so I can remove the hardcoded values
         // and make it easier to change them in the future.
         // 5min in seconds
-        private const int FirstRuleTimeLimit = 300;
+        private const int FirstRuleTimeLimit = 30;
         // 10min in seconds
-        private const int SecondRuleTimeLimit = 600;
+        private const int SecondRuleTimeLimit = 60;
         // 15min in seconds
-        private const int ThirdRuleTimeLimit = 900;
+        private const int ThirdRuleTimeLimit = 90;
 
         // Variable to store all completed rules
         private int completedRules = 0;
@@ -141,36 +141,52 @@ namespace TimingChallengesNotNuzlocke
                 string action = possibleActions[actionIndexValue];
                 string consequence = possibleConsequences[consequenceIndexValue];
 
+                // define action rating
+                int actionRating = actionRatings[actionIndexValue];
+                // define consequence rating
+                int consequenceRating = consequenceRatings[consequenceIndexValue];
+
+                // Derive the severity level
+                double average = (actionRating + consequenceRating) / 2.0;
+                int severityLevel = (int)Math.Round(average, MidpointRounding.AwayFromZero);
+
+
                 // There are 2 possibilities of rules, but method should allow an infinite amount of possibilities
                 // With current design a maxValue of 2 makes sense but wouldnt be able to use bool design if I want
                 // To convert to a 1 dimesional loop.
                 int maxValue = 2;
 
                 // every time this function runs, a TF check occurs to see if a random number is equal to
-                // the value of a possibility, if so the corresponding rool is generated,
+                // the value of a possibility, if so the corresponding rule is generated,
                 // Otherwise simply repeat this for the amount of possibilities
                 // could be converted to a loop too? idk its getting late
                 bool severePossibilities = randomNumberGenerator.Next(maxValue) == 1;
                 if (severePossibilities) {
+                    // Create a new Rule object with the random action, consequence, and time limit
+                    // Converted this to create a new StandardRule using inheritance rules as opposed to direct child class object initialization
+                    Rule newRule = new SeverityRule(timeLimit, action, consequence, actionRating, consequenceRating, severityLevel);
+
+                    return newRule;
+
+                }
+                else // default is gonna be a StandardRule
+                {
+                    Rule newRule = new StandardRule(timeLimit, action, consequence);
+                    return newRule;
+                }
 
 
-                // My fault in my previous writing effectively eliminates 0 from my possibilities
-            }
+               
+            } // Genius over here realizes I wont get this to compile without returning a rule even if I try catch
             catch (InvalidRuleException) 
             {
+                
                 MessageBox.Show("I can't believe its not a valid rule, it's an InvalidRuleException");
+                // I gotta put this rule here if I mess up
+                return new StandardRule(timeLimit, "You messed up", "discard your brain");
             }
 
-            // Generate a random action and consequence from the arrays above
-            // In the existing form the strings below utilize Next(int maxValue) overload
-            // omitting a requirement to otherwise implement selection statements and error handling
-            string actidon = possibleActions[randomNumberGenerator.Next(possibleActions.Length)];
-            string conseqwuence = possibleConsequences[randomNumberGenerator.Next(possibleConsequences.Length)];
-            // Create a new Rule object with the random action, consequence, and time limit
-            // Converted this to create a new StandardRule using inheritance rules as opposed to direct child class object initialization
-            Rule newRule = new StandardRule(timeLimit, action, consequence);
-           
-            return newRule;
+
         }
 
         // A function for the first 3 random rules, ill call this when main window initializes
