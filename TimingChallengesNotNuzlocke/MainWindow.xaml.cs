@@ -130,13 +130,42 @@ namespace TimingChallengesNotNuzlocke
            
         {
            //logic for invalid rule exceptions and any changes ill have to make goes here
+           try 
+            {
 
+                // The objective here is to replicate the code below
+                // I will still generate a random string, but based off the index of the possible lengths
+                int actionIndexValue = randomNumberGenerator.Next(possibleActions.Length);
+                int consequenceIndexValue = randomNumberGenerator.Next(possibleConsequences.Length);
+                // That way I can equate it directly to the severity levels or change implementation methodology easily
+                string action = possibleActions[actionIndexValue];
+                string consequence = possibleConsequences[consequenceIndexValue];
+
+                // There are 2 possibilities of rules, but method should allow an infinite amount of possibilities
+                // With current design a maxValue of 2 makes sense but wouldnt be able to use bool design if I want
+                // To convert to a 1 dimesional loop.
+                int maxValue = 2;
+
+                // every time this function runs, a TF check occurs to see if a random number is equal to
+                // the value of a possibility, if so the corresponding rool is generated,
+                // Otherwise simply repeat this for the amount of possibilities
+                // could be converted to a loop too? idk its getting late
+                bool severePossibilities = randomNumberGenerator.Next(maxValue) == 1;
+                if (severePossibilities) {
+
+
+                // My fault in my previous writing effectively eliminates 0 from my possibilities
+            }
+            catch (InvalidRuleException) 
+            {
+                MessageBox.Show("I can't believe its not a valid rule, it's an InvalidRuleException");
+            }
 
             // Generate a random action and consequence from the arrays above
             // In the existing form the strings below utilize Next(int maxValue) overload
             // omitting a requirement to otherwise implement selection statements and error handling
-            string action = possibleActions[randomNumberGenerator.Next(possibleActions.Length)];
-            string consequence = possibleConsequences[randomNumberGenerator.Next(possibleConsequences.Length)];
+            string actidon = possibleActions[randomNumberGenerator.Next(possibleActions.Length)];
+            string conseqwuence = possibleConsequences[randomNumberGenerator.Next(possibleConsequences.Length)];
             // Create a new Rule object with the random action, consequence, and time limit
             // Converted this to create a new StandardRule using inheritance rules as opposed to direct child class object initialization
             Rule newRule = new StandardRule(timeLimit, action, consequence);
