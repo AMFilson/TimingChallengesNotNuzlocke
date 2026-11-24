@@ -112,7 +112,7 @@ namespace TimingChallengesNotNuzlocke
         // action and consequence when combined to create a new rule
         private readonly int[] consequenceRatings =
         {
-            5, 8, 9, 7, 10, 6, 5, 8, 9
+            5, 8, 9, 7, 4, 6, 5, 8, 9
         };
 
         // I need an object for random number generation to select a random action and consequence from the arrays above.
@@ -161,13 +161,27 @@ namespace TimingChallengesNotNuzlocke
                 // Otherwise simply repeat this for the amount of possibilities
                 // could be converted to a loop too? idk its getting late
                 bool severePossibilities = randomNumberGenerator.Next(maxValue) == 1;
-                if (severePossibilities) {
-                    // Create a new Rule object with the random action, consequence, and time limit
-                    // Converted this to create a new StandardRule using inheritance rules as opposed to direct child class object initialization
-                    Rule newRule = new SeverityRule(timeLimit, action, consequence, actionRating, consequenceRating, severityLevel);
+                if (severePossibilities)
+                {
+                    // Count how many currently active SeverityRule items exceed MaxHighSeverityAllowed
+                    int activeHighSeverity = 0;
+                    foreach (Rule individualRule in activeRules)
+                    {
+                        //if the individual rule is a severe rule and it matches or exceeedes the severity cap, count it
+                        // Once we reach 1 rule that is at or above the severity limit, no more severe rules can be made
+                        if (individualRule is SeverityRule severityRule && severityRule.SeverityLevel >= MaxHighSeverityAllowed)
+                        {
+                            activeHighSeverity++;
+                        }
+                    }
 
-                    return newRule;
-
+                    // Fall back to a StandardRule if we already hit the max allowed qty of severe rules above a certain severity limit
+                    if ( activeHighSeverity >= MaxHighSeverityActiveCount)
+                    {
+                        return new StandardRule(timeLimit, action, consequence);
+                    }
+                    //Otherwise just create another severity rule
+                    return new SeverityRule(timeLimit, action, consequence, actionRating, consequenceRating, severityLevel);
                 }
                 else // default is gonna be a StandardRule
                 {
@@ -325,8 +339,14 @@ namespace TimingChallengesNotNuzlocke
         // An event handler that will pause or unpause all active challenge timers when the Pause All Timers button is clicked.
         private void ButtonPauseTimers(object sender, RoutedEventArgs e)
         {
+
             //flip flop, hip hop
             isChallengeActive = !isChallengeActive;
+
+            if (sender is Button button)
+            {
+                button.Content = isChallengeActive ? "_Pause All Timers" : "_Start All Timers";
+            }
         }
 
         // An event handler that will replace the last created rule with a new random rule
@@ -364,5 +384,13 @@ namespace TimingChallengesNotNuzlocke
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
         }
+
+        private void ButtonShowCompletedCount(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(
+                $"Total rules completed so far: {completedRules}\nCurrently active rules: {activeRules.Count}",
+                "Completed Rules");
+        
+         }
     }
 }

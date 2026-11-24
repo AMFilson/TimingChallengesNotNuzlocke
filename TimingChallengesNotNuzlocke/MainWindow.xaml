@@ -35,9 +35,10 @@
         <!--I want all columns and rows to be evenly spaced so opting for UniformGrid vs Grid-->
         <UniformGrid Grid.Row="1" Grid.Column="0" Columns="2" VerticalAlignment="Bottom" Margin="10,0,10,10">
             <Button Content="_Start Challenge" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top"  ToolTip="Starts all challenge timers." IsDefault="True" Click="ButtonStartChallenge" TabIndex="1"/>
-            <Button Content="_Pause All Timers" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top"  ToolTip="Pause or unpause all active challenge timers." Click="ButtonPauseTimers" TabIndex="2"/>
+            <Button x:Name="pauseAllimersButton" Content="_Pause All Timers" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top"  ToolTip="Pause or unpause all active challenge timers." Click="ButtonPauseTimers" TabIndex="2"/>
             <Button Content="_Change Last Rule" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top" ToolTip="Reroll the action and consequence of the newest rule." Click="ButtonChangeLastRule" TabIndex="3"/>
-            <Button Content="_End Challenge" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top" Click="CloseApplication" IsCancel="True" ToolTip="Reroll the action and consequence of the newest rule." TabIndex="4"/>
+            <Button Content="_Completed Count" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top" ToolTip="Display how many rules have been completed so far." Click="ButtonShowCompletedCount" TabIndex="4"/>
+            <Button Content="_End Challenge" HorizontalAlignment="Left" Padding="10,5" Margin="3" VerticalAlignment="Top" Click="CloseApplication" IsCancel="True" ToolTip="End the challenge and close the application." TabIndex="5"/>
         </UniformGrid>
 
         <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="1" Margin="10,10,10,10" ToolTip="Gameplay footage goes here in post."/>

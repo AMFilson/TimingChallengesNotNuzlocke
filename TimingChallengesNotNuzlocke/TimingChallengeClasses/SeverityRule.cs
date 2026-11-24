@@ -24,12 +24,12 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
             //Exception handling to throw for the new class, need to catch it in mainwindow.xaml.cs still
             if (actionRating < 1 || actionRating > 10)
             {
-                throw new InvalidRuleException("Action ease rating must be between 1 and 10.");
+                throw new InvalidRuleException("Action rating must be between 1 and 10.");
             }
 
             if (consequenceRating < 1 || consequenceRating > 10)
             {
-                throw new InvalidRuleException("Consequence impact rating must be between 1 and 10.");
+                throw new InvalidRuleException("Consequence rating must be between 1 and 10.");
             }
 
             // idk whats even wrong at this point bro why wont this exist in current context
