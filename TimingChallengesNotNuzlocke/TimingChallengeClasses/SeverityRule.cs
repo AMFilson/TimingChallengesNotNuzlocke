@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Text;
 
 namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
@@ -43,6 +44,12 @@ namespace TimingChallengesNotNuzlocke.TimingChallengeClasses
             severityLevel = (int)Math.Round(average, MidpointRounding.AwayFromZero);
             SeverityLevel = severityLevel;
         }
+
+        //getters and setters for all the new properties
+        public int ActionRating { get; set; }
+        public int ConsequenceRating { get; set; }
+
+        public int SeverityLevel { get; set; }
 
         //overriden toString method for severity level IF IT WORKED
         public override string ToString()

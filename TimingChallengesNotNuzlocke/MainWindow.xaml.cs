@@ -4,7 +4,7 @@
 // DESC: This class contains the main logic of this TimingChallengesNotNuzlocke project. And data for Actions and Consequences.
 
 using System.Collections.ObjectModel;
-using System.Data;
+
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,7 +34,8 @@ namespace TimingChallengesNotNuzlocke
         // A collection that contains all active rules, used to dynamically add and remove rules from the UI
         // As they are generated and expired. ObservableCollection is used so that the UI
         // can automatically update when the collection changes.
-        private ObservableCollection<StandardRule> activeRules = new ObservableCollection<StandardRule>();
+        private ObservableCollection<Rule> activeRules = new ObservableCollection<Rule>();
+
 
         // A property used to indicate whether the challenge
         // is currently active or not, this will be used to pause and unpause all timers.
@@ -48,6 +49,14 @@ namespace TimingChallengesNotNuzlocke
         private const int SecondRuleTimeLimit = 600;
         // 15min in seconds
         private const int ThirdRuleTimeLimit = 900;
+
+        // Variable to store all completed rules
+        private int completedRules = 0;
+
+        // Max limit for how insane the severity can get
+        private const int MaxHighSeverityAllowed = 9;
+        // capping amount of rules that can be at max
+        private const int MaxHighSeverityActiveCount = 1;
 
         public MainWindow()
         {
@@ -79,6 +88,12 @@ namespace TimingChallengesNotNuzlocke
             "If you meet a mermaid"
         };
 
+        // random severity ratings corresponding to each rule
+        private readonly int[] actionRatings =
+        {
+            10, 7, 1, 4, 5, 8, 4, 6, 10, 2
+        };
+
         // A simple array of all possible consequences which can be triggered by a specific action during a timing challenge.
         private string[] possibleConsequences = new string[]
         {
@@ -93,6 +108,13 @@ namespace TimingChallengesNotNuzlocke
             "restart from your last checkpoint"
         };
 
+        // Severity is calculated based on an avg value derived from the values assigned to each
+        // action and consequence when combined to create a new rule
+        private readonly int[] consequenceRatings =
+        {
+            5, 8, 9, 7, 10, 6, 5, 8, 9
+        };
+
         // I need an object for random number generation to select a random action and consequence from the arrays above.
         // As well as for setting timers
         // set to readonly no need for anyone to be able to reassign
@@ -103,17 +125,21 @@ namespace TimingChallengesNotNuzlocke
         // Each rule will have a timer of 5,10, and 15 minutes respectively.
         // When the timer runs out, the rule will be removed from the UI and a new random rule will be generated.
         // Each rule should derive from my Rules class
-        private StandardRule CreateRandomRule(int timeLimit)
+        private Rule CreateRandomRule(int timeLimit)
 
            
         {
+           //logic for invalid rule exceptions and any changes ill have to make goes here
+
+
             // Generate a random action and consequence from the arrays above
             // In the existing form the strings below utilize Next(int maxValue) overload
             // omitting a requirement to otherwise implement selection statements and error handling
             string action = possibleActions[randomNumberGenerator.Next(possibleActions.Length)];
             string consequence = possibleConsequences[randomNumberGenerator.Next(possibleConsequences.Length)];
             // Create a new Rule object with the random action, consequence, and time limit
-            StandardRule newRule = new StandardRule(timeLimit, action, consequence);
+            // Converted this to create a new StandardRule using inheritance rules as opposed to direct child class object initialization
+            Rule newRule = new StandardRule(timeLimit, action, consequence);
            
             return newRule;
         }
@@ -123,6 +149,10 @@ namespace TimingChallengesNotNuzlocke
         // my own understanding and simplicity.
         private void GenerateInitialRules()
         {
+            //clear list of all active rules
+            activeRules.Clear();
+            //set completion tracker back to 0
+            completedRules = 0;
             // Create 3 random rules with modular time limits and insert the values into the activeRules collection
             activeRules.Add(CreateRandomRule(FirstRuleTimeLimit));
             activeRules.Add(CreateRandomRule(SecondRuleTimeLimit));
@@ -131,10 +161,11 @@ namespace TimingChallengesNotNuzlocke
 
         // a function that will be called when a rule's timer runs out,
         // this function will remove the rule from the UI and generate a new random rule with the same time limit.
-        private void ReplaceExpiredRule(StandardRule expiredRule)
+        private void ReplaceExpiredRule(Rule expiredRule)
         {
             // Remove the expired rule from the active rules list
             activeRules.Remove(expiredRule);
+
             // Generate a new random rule object with the same time limit as the rule that just expired
             activeRules.Add(CreateRandomRule(expiredRule.InitialTimeLimit));
         }
@@ -201,12 +232,13 @@ namespace TimingChallengesNotNuzlocke
                     // Here we decrement the time limit of each rule and check if the timeLimit is <= 0
                     // If it is we call the ReplaceRule function to remove the expired rule
                     // and generate a new random rule with the same time limit.
-                    StandardRule currentRule = activeRules[individualActiveRule];
+                    Rule currentRule = activeRules[individualActiveRule];
                     currentRule.TimeLimit--;
                     // If the time limit has run out, replace the rule
                     if (currentRule.TimeLimit <= 0)
-                    {
-
+                    {   
+                        // increment the counter of all rules for tracking
+                        completedRules++;
                         ReplaceExpiredRule(currentRule);
                     }
                 }
@@ -263,7 +295,7 @@ namespace TimingChallengesNotNuzlocke
                 if (activeRules.Count > 0)
                 {
                     // grab the the last created rule based off index and assign it to a variable
-                    StandardRule lastCreatedRule = activeRules[activeRules.Count - 1];
+                    Rule lastCreatedRule = activeRules[activeRules.Count - 1];
                     // Call the Replace Expired rule function to remove it and generate a new random rule
                     ReplaceExpiredRule(lastCreatedRule);
                 }
